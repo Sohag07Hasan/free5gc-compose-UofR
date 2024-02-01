@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+  ueransim:
+    container_name: ueransim
+    image: free5gc/ueransim:latest
+    command: ./nr-gnb -c ./config/gnbcfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - gnb.free5gc.org
+
+
+  ueransim-gnb2:
+    container_name: ueransim-gnb2
+    image: free5gc/ueransim:latest
+    command: ./nr-gnb -c ./config/gnbcfg.yaml
+    volumes:
+      - ./config/gnb2cfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - gnb2.free5gc.org
+
+networks:
+  privnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.100.200.0/24
+    driver_opts:
+      com.docker.network.bridge.name: br-free5gc
+
+volumes:
+  dbdata:

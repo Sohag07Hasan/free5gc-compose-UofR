@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  
+  ### Slice 1: ue1 ~ ue4 
+  ### Slice 2: ue5 ~ ue8
+  ueransim-ue1:
+    container_name: ue1
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue1.free5gc.org
+
+  ueransim-ue2:
+    container_name: ue2
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue2cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue2.free5gc.org
+
+  ueransim-ue3:
+    container_name: ue3
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue3cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue3.free5gc.org
+
+  ueransim-ue4:
+    container_name: ue4
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue4cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue4.free5gc.org
+
+  ueransim-ue5:
+    container_name: ue5
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue5cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue5.free5gc.org
+
+  ueransim-ue6:
+    container_name: ue6
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue6cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue6.free5gc.org
+
+  ueransim-ue7:
+    container_name: ue7
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue7cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue7.free5gc.org
+
+  ueransim-ue8:
+    container_name: ue8
+    image: free5gc/ueransim:latest
+    command: ./nr-ue -c ./config/uecfg.yaml
+    volumes:
+      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/ue8cfg.yaml:/ueransim/config/uecfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - ue8.free5gc.org  
+
+  
+networks:
+  privnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.100.200.0/24
+    driver_opts:
+      com.docker.network.bridge.name: br-free5gc
+
+volumes:
+  dbdata:
