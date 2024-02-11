@@ -94,6 +94,27 @@ case $input_command in
     tmux send-keys 'docker exec -it ue5 bash' C-m
     tmux send-keys 'ping -c 10 -I uesimtun0 google.com' C-m
     ;;
+  "slice test")
+    for slice_num in 1 2; do
+      #Create a new Tmux window (tab) for each slice
+      tmux new-window -n "Slice${slice_num}"
+
+      #split the new window into 4 equal panes
+      tmux split-window -h
+      tmux select-pane -t 0
+      tmux split-window -v
+      tmux select-pane -t 2
+      tmux split-window -v
+
+      # Now, loop through each pane to execute commands
+      for pane_id in {0..3}; do
+        ue_num=$((pane_id + 1))
+        # Customize your command below instead of echo
+        tmux send-keys -t ${pane_id} "docker exec -it ue${slice_num}${ue_num} bash" C-m
+        tmux send-keys -t ${pane_id} "ping -c 5 -I uesimtun0 8.8.8.8" C-m
+      done
+    done
+    ;;    
   *)
     echo "Command not recognized."
     ;;

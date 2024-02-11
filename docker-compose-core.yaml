@@ -6,7 +6,7 @@ services:
     image: free5gc/upf:v3.3.0
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg.yaml"
     volumes:
-      - ./config/upfcfg.yaml:/free5gc/config/upfcfg.yaml
+      - ./config/slice1/upf1cfg.yaml:/free5gc/config/upfcfg.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -20,7 +20,7 @@ services:
     image: free5gc/upf:v3.3.0
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg.yaml"
     volumes:
-      - ./config/upf2cfg.yaml:/free5gc/config/upfcfg.yaml
+      - ./config/slice2/upf2cfg.yaml:/free5gc/config/upfcfg.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -136,8 +136,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/smfcfg.yaml:/free5gc/config/smfcfg.yaml
-      - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
+      - ./config/slice1/smf1cfg.yaml:/free5gc/config/smfcfg.yaml
+      - ./config/slice1/uerouting.yaml:/free5gc/config/uerouting.yaml
     environment:
       GIN_MODE: release
     networks:
@@ -155,8 +155,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/smf2cfg.yaml:/free5gc/config/smfcfg.yaml
-      - ./config/uerouting2.yaml:/free5gc/config/uerouting.yaml
+      - ./config/slice2/smf2cfg.yaml:/free5gc/config/smfcfg.yaml
+      - ./config/slice2/uerouting2.yaml:/free5gc/config/uerouting.yaml
     environment:
       GIN_MODE: release
     networks:
@@ -224,26 +224,26 @@ services:
       - free5gc-nrf
       - free5gc-webui
 
-  free5gc-n3iwf:
-    container_name: n3iwf
-    image: free5gc/n3iwf:v3.3.0
-    command: sh -c "./n3iwf-ipsec.sh && ./n3iwf -c ./config/n3iwfcfg.yaml"
-    volumes:
-      - ./config/n3iwfcfg.yaml:/free5gc/config/n3iwfcfg.yaml
-      - ./config/n3iwf-ipsec.sh:/free5gc/n3iwf-ipsec.sh
-    environment:
-      GIN_MODE: release
-    cap_add:
-      - NET_ADMIN
-    networks:
-      privnet:
-        ipv4_address: 10.100.200.15
-        aliases:
-          - n3iwf.free5gc.org
-    depends_on:
-      - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+  # free5gc-n3iwf:
+  #   container_name: n3iwf
+  #   image: free5gc/n3iwf:v3.3.0
+  #   command: sh -c "./n3iwf-ipsec.sh && ./n3iwf -c ./config/n3iwfcfg.yaml"
+  #   volumes:
+  #     - ./config/n3iwfcfg.yaml:/free5gc/config/n3iwfcfg.yaml
+  #     - ./config/n3iwf-ipsec.sh:/free5gc/n3iwf-ipsec.sh
+  #   environment:
+  #     GIN_MODE: release
+  #   cap_add:
+  #     - NET_ADMIN
+  #   networks:
+  #     privnet:
+  #       ipv4_address: 10.100.200.15
+  #       aliases:
+  #         - n3iwf.free5gc.org
+  #   depends_on:
+  #     - free5gc-amf
+  #     - free5gc-smf
+  #     - free5gc-upf
 
   free5gc-webui:
     container_name: webui
@@ -267,22 +267,22 @@ services:
     depends_on:
       - db
   
-  n3iwue:
-    container_name: n3iwue
-    image: free5gc/n3iwue:latest
-    command: sleep infinity
-    volumes:
-      - ./config/n3uecfg.yaml:/n3iwue/config/n3ue.yaml
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - "/dev/net/tun"  
-    networks:
-      privnet:
-        aliases:
-          - n3ue.free5gc.org
-    depends_on:
-      - free5gc-n3iwf
+  # n3iwue:
+  #   container_name: n3iwue
+  #   image: free5gc/n3iwue:latest
+  #   command: sleep infinity
+  #   volumes:
+  #     - ./config/n3uecfg.yaml:/n3iwue/config/n3ue.yaml
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - "/dev/net/tun"  
+  #   networks:
+  #     privnet:
+  #       aliases:
+  #         - n3ue.free5gc.org
+  #   depends_on:
+  #     - free5gc-n3iwf
 
 networks:
   privnet:

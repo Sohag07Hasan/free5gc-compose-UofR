@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
 
-  ueransim:
-    container_name: ueransim
+  ueransim-gnb11:
+    container_name: ueransim-gnb11
     image: free5gc/ueransim:latest
     command: ./nr-gnb -c ./config/gnbcfg.yaml
     volumes:
-      - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
-      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+      - ./config/slice1/gnb11cfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/slicle1/ue11cfg.yaml:/ueransim/config/uecfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
@@ -19,13 +19,13 @@ services:
           - gnb.free5gc.org
 
 
-  ueransim-gnb2:
-    container_name: ueransim-gnb2
+  ueransim-gnb21:
+    container_name: ueransim-gnb21
     image: free5gc/ueransim:latest
     command: ./nr-gnb -c ./config/gnbcfg.yaml
     volumes:
-      - ./config/gnb2cfg.yaml:/ueransim/config/gnbcfg.yaml
-      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+      - ./config/slice2/gnb21cfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/slice2/ue21cfg.yaml:/ueransim/config/uecfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
